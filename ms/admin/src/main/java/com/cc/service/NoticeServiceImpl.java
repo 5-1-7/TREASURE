@@ -59,6 +59,15 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public NoticePojo findNoticeById(Long id) {
+        NoticePojo notice = noticeDao.selectById(id);
+        if (notice==null) {
+            throw new ServiceException("记录可能不存在哦");
+        }
+        return notice;
+    }
+
+    @Override
     public int insert(NoticePojo notice) {
         int rows = noticeDao.insert(notice);
         return rows;
@@ -78,8 +87,5 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeDao.update(notice);
     }
 
-    @Override
-    public NoticePojo findNoticeById(Long id) {
-        return noticeDao.selectById(id);
-    }
+
 }
