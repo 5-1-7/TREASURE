@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--任何一个xml文档都需要有一个根元素，而且只能有一个，例如这里的mapper元素为映射文件的根元素。
+namespace为根元素中一个属性，这个属性用于定义这个xml文件中元素的命名空间(类似类的包名)。
+同一个命名空间下不允许有相同元素的id，但不同命名空间可以有-->
+<mapper namespace="com.demo.dao.NoticeDao">
+    <!--SQL元素用于定义映射语句中的共性<sql id="selectSQL">，selectSQL是自定义名称
+    假如有地方需要这个共性内容，可以通过<include refid="selectSQL"/>进行包含-->
+    <sql id="selectSQL">
+        SELECT TITLE, TYPE, CONTENT, STATUS, CREATEDUSER, CREATEDTIME, MODIFIEDUSER, MODIFIEDTIME, REMARK
+        FROM sys_notices
+    </sql>
+    <!-- MyBatis中select标签用于定义查询SQL映射，
+         1)id为这个元素的唯一标识
+         2)resultType 用于定义查询结果的映射类型(一行记录要映射的结果类型)，高级的结果映射还可以使用resultMap.
+         MyBatis中的每个SQL映射，在系统启动时都会为其创建一个MappedStatement对象
+         TODO MyBatis查询 -->
+    <select id="selectNotice" resultType="com.demo.pojo.NoticePojo" parameterType="com.demo.pojo.NoticePojo">
+        <include refid="selectSQL"/>
+        <where>
+            <if test="title!=null and title!=''">
+                title LIKE concat ("%",#{title},"%")
+            </if>
+            <if test="modifiedUser!=null and modifiedUser!=''">
+                AND modifiedUser=#{modifiedUser}
+            </if>
+            <if test="type!=null and type!=''">
+                AND type=#{type}
+            </if>
+        </where>
+        ORDER BY createdTime DESC
+    </select>
+    <!-- 向表中新增一条数据 TODO MyBatis新增   -->
+    <insert id="insertNotice">
+        INSERT INTO sys_notices
+                (TITLE, TYPE, CONTENT, STATUS, CREATEDUSER, CREATEDTIME, MODIFIEDUSER, MODIFIEDTIME, REMARK)
+        VALUES (#{title}, #{type}, #{content}, #{status}, #{createdUser}, NOW(), #{modifiedUser},
+                NOW(), #{remark})
+    </insert>
+    <!-- 基于id删除指定记录 TODO MyBatis删除  -->
+    <delete id="deleteNoticeById">
+        DELETE FROM sys_notices
+        <where>
+            <if test="array!=null and array.length>0">
+                ID in
+                <foreach collection="array" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            OR 1=2
+        </where>
+    </delete>
+    <!--  基于id更新数据 TODO MyBatis改 -->
+    <update id="updateNotice">
+        UPDATE sys_notices
+        SET title=#{title},
+            type=#{type},
+            content=#{content},
+            status=#{status},
+            createdUser=#{createdUser},
+            modifiedUser=#{modifiedUser},
+            modifiedTime=NOW(),
+            remark=#{remark}
+        WHERE id = #{id}
+    </update>
+</mapper>

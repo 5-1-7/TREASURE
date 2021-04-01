@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.LogDao">
+
+    <sql id="selectId">
+        SELECT id,username,operation,method,params,time,ip,createdTime,status,error
+        FROM sys_logs
+    </sql>
+
+    <select id="selectLog" resultType="com.demo.pojo.LogPojo">
+        <include refid="selectId"/>
+        <where>
+            <if test="operation!=null and operation!=''">
+                operation LIKE concat("%",#{operation},"%")
+            </if>
+            <if test="username!=null and username!=''">
+                AND username LIKE concat("%",#{username},"%")
+            </if>
+            <if test="status!=null">
+                AND status=#{status}
+            </if>
+            <if test="createdTime!=null">
+                AND createdTime>=#{createdTime}
+            </if>
+        </where>
+        ORDER BY createdTime DESC
+    </select>
+
+
+    <select id="findLogById" resultType="com.demo.pojo.LogPojo">
+        <include refid="selectId"/>
+        WHERE id=#{id}
+    </select>
+
+    <insert id="insertLog">
+        INSERT INTO sys_logs
+                (username, operation, method, params, time, ip, createdTime, status, error)
+        VALUES (#{username}, #{operation}, #{method}, #{params}, #{time}, #{ip}, #{createdTime}, #{status}, #{error})
+    </insert>
+
+    <delete id="deleteLogById">
+        DELETE FROM sys_logs
+        <where>
+            <if test="array!=null and array.length>0">
+                id IN
+                <foreach collection="array" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            OR 1=2
+        </where>
+    </delete>
+
+</mapper>
