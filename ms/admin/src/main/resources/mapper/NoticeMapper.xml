@@ -57,7 +57,7 @@
             content=#{content},
             status=#{status},
             modifiedUser=#{modifiedUser},
-            modifiedTime=NOW(modifiedTime),
+            modifiedTime=NOW(),
             remark=#{remark}
         WHERE id = #{id}
     </update>
