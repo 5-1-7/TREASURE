@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--任何一个xml文档都需要有一个根元素，而且只能有一个，
+例如这里的mapper元素为映射文件的根元素。namespace为根元素中一个属性，
+这个属性用于定义这个xml文件中元素的命名空间(类似类的包名)。
+同一个命名空间下不允许有相同元素的id，但不同命名空间可以有-->
+<mapper namespace="com.cc.dao.NoticeDao">
+    <!--所有select查询标签必须写parameterType和resultType或者resultMap-->
+    <!--
+    mybatis 中select元素用于定义查询sql映射，
+    1)id为这个元素的唯一标识；
+    2)resultType 用于定义查询结果的映射类型(一行记录要映射的结果类型)，
+      高级的结果映射还可以使用resultMap。
+    mybatis中的每个sql映射，在系统启动时都会为其创建一个MappedStatement对象-->
+    <select id="select" resultType="com.cc.pojo.NoticePojo">
+        SELECT *
+        FROM sys_notices
+        <where>
+            <if test="title!=null and title!=''">
+                title LIKE concat("%",
+                        #{title},
+                        "%"
+                        )
+            </if>
+            <if test="modifiedUser!=null and modifiedUser!=''">
+                AND modifiedUser=
+                        #{modifiedUser}
+            </if>
+            <if test="type!=null and type!=''">
+                AND type=
+                        #{type}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_notices(title, type, content, status, createdUser, createdTime, modifiedUser, modifiedTime,
+                                remark)
+        VALUES (#{title}, #{type}, #{content}, #{status}, #{createdUser}, NOW(), #{modifiedUser}, NOW(), #{remark})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE sys_notices
+        <where>
+            <if test="array!=null array.length>0">
+                id IN
+                <foreach collection="array" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            OR 1=2
+        </where>
+    </delete>
+
+    <update id="update">
+        UPDATE sys_notices
+        SET title=#{},
+            type=#{},
+            content=#{},
+            status=#{},
+            createdUser=#{},
+            createdTime=NOW(),
+            modifiedUser=#{},
+            modifiedTime=NOW(),
+            remark=#{}
+        WHERE id = #{id}
+    </update>
+</mapper>

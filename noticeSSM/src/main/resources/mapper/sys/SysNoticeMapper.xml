@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--定义xml文档的约束，一个xml文档中允许有哪些元素，这些元素有什么属性，
+元素与元素之间有什么嵌套关系-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--任何一个xml文档都需要有一个根元素，而且只能有一个，
+例如这里的mapper元素为映射文件的根元素。namespace为根元素中一个属性，
+这个属性用于定义这个xml文件中元素的命名空间(类似类的包名)。同一个
+命名空间下不允许有相同元素的id，但不同命名空间可以有-->
+<mapper namespace="com.cy.pj.notice.dao.SysNoticeDao">
+    <!--
+    mybatis 中select元素用于定义查询sql映射，
+    1)id为这个元素的唯一标识
+    2)resultType 用于定义查询结果的映射类型(一行记录要映射的结果类型)，
+     高级的结果映射还可以使用resultMap.
+    mybatis中的每个sql映射，在系统启动时都会为其创建一个MappedStatement对象
+    -->
+    <select id="selectNotices"
+            parameterType="com.cy.pj.notice.pojo.SysNotice"
+            resultType="com.cy.pj.notice.pojo.SysNotice">
+           select *
+           from sys_notices
+           <where>
+               <if test="title!=null and title!=''">
+                   title like concat ("%",#{title},"%")
+               </if>
+               <if test="modifiedUser!=null and modifiedUser!=''">
+                  and modifiedUser=#{modifiedUser}
+               </if>
+               <if test="type!=null and type!=''">
+                  and type=#{type}
+               </if>
+           </where>
+           order by createdTime desc
+    </select>
+    <!--向表中新增一条数据-->
+    <insert id="insertNotice" parameterType="com.cy.pj.notice.pojo.SysNotice">
+        insert into sys_notices
+        (title,type,content,status,remark,
+            createdTime,modifiedTime,createdUser,modifiedUser)
+        values
+        (#{title},#{type},#{content},#{status},#{remark},
+         now(),now(),#{createdUser},#{modifiedUser})
+    </insert>
+    <!--基于id删除指定记录-->
+    <delete id="deleteById">
+        delete from sys_notices
+        <where>
+            <if test="ids!=null and ids.length>0">
+                 id in <!--(10,20,30,40)-->
+                <foreach collection="ids" open="(" close=")"
+                         separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            or 1=2
+        </where>
+    </delete>
+
+    <update id="updateNotice" parameterType="com.cy.pj.notice.pojo.SysNotice">
+        update sys_notices
+        set title=#{title},
+            content=#{content},
+            type=#{type},
+            status=#{status},
+            remark=#{remark},
+            modifiedUser=#{modifiedUser},
+            modifiedTime=now()
+        where id=#{id}
+    </update>
+
+</mapper>
+
+
+
+
+
+
+
+
+

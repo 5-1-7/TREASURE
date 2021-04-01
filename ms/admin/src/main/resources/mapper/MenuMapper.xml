@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.dao.MenuDao">
+
+    <select id="selectAllMenu" resultType="com.cc.pojo.MenuPojo">
+        <!-- 方法1 -->
+        SELECT c.*, p.name parentName
+        FROM sys_menus c
+        LEFT JOIN sys_menus p
+        ON C.parentId = p.id
+        <!--方法2-->
+        <!--
+         SELECT c.*,(SELECT name
+         FROM sys_menus p
+         WHERE c.parentId=p.id) parentName
+         FROM sys_menus c
+         -->
+    </select>
+
+    <select id="selectById" resultType="com.cc.pojo.MenuPojo">
+        SELECT c.*, p.name parentName
+        FROM sys_menus c
+                     LEFT JOIN sys_menus p
+                ON c.parentId = p.id
+        WHERE c.id = #{id}
+    </select>
+
+    <insert id="insertMenu">
+        INSERT INTO sys_menus
+                (name, url, type, sort, remark, parentId, permission, createdTime, modifiedTime,
+                 createdUser, modifiedUser)
+        VALUES (#{name}, #{url}, #{type}, #{sort}, #{remark}, #{parentId}, #{permission}, now(), now(),
+                #{createdUser}, #{modifiedUser})
+    </insert>
+
+    <update id="updateMenu">
+        UPDATE sys_menus
+        set name=#{name},
+            type=#{type},
+            url=#{url},
+            sort=#{sort},
+            parentId=#{parentId},
+            permission=#{permission},
+            remark=#{remark},
+            modifiedTime=now(),
+            modifiedUser=#{modifiedUser}
+        where id = #{id}
+    </update>
+</mapper>
