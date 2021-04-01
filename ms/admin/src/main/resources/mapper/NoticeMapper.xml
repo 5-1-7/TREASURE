@@ -19,20 +19,16 @@
         FROM sys_notices
         <where>
             <if test="title!=null and title!=''">
-                title LIKE concat("%",
-                        #{title},
-                        "%"
-                        )
+                title LIKE concat ("%",#{title},"%")
             </if>
             <if test="modifiedUser!=null and modifiedUser!=''">
-                AND modifiedUser=
-                        #{modifiedUser}
+                AND modifiedUser=#{modifiedUser}
             </if>
             <if test="type!=null and type!=''">
-                AND type=
-                        #{type}
+                AND type=#{type}
             </if>
         </where>
+        ORDER BY createdTime DESC
     </select>
 
     <insert id="insert">
@@ -56,15 +52,15 @@
 
     <update id="update">
         UPDATE sys_notices
-        SET title=#{},
-            type=#{},
-            content=#{},
-            status=#{},
-            createdUser=#{},
+        SET title=#{title},
+            type=#{type},
+            content=#{content},
+            status=#{status},
+            createdUser=#{createdUser},
             createdTime=NOW(),
-            modifiedUser=#{},
-            modifiedTime=NOW(),
-            remark=#{}
+            modifiedUser=#{modifiedUser},
+            modifiedTime=NOW(modifiedTime),
+            remark=#{remark}
         WHERE id = #{id}
     </update>
 </mapper>
