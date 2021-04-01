@@ -56,10 +56,8 @@
             type=#{type},
             content=#{content},
             status=#{status},
-            createdUser=#{createdUser},
-            createdTime=NOW(),
             modifiedUser=#{modifiedUser},
-            modifiedTime=NOW(modifiedTime),
+            modifiedTime=NOW(),
             remark=#{remark}
         WHERE id = #{id}
     </update>

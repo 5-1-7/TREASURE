@@ -59,8 +59,6 @@
             type=#{type},
             content=#{content},
             status=#{status},
-            createdUser=#{createdUser},
-            createdTime=NOW(),
             modifiedUser=#{modifiedUser},
             modifiedtime=NOW(),
             remark=#{remark}
