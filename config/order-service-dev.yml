@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: order-service
+
+# 8001,  8101,  8201
+server:
+  port: 8201
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka1:2001/eureka
+
+# 为了测试重试效果，这里配置重试参数
+ribbon:
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 2
+  ReadTimeout: 1000
+

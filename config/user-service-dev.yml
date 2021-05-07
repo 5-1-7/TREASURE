@@ -1,0 +1,22 @@
+# yml, yaml 读音：耶冒
+spring:
+  application:
+    name: user-service
+
+# 8001, 8101, 8201
+server:
+  port: 8101
+
+# 自定义配置属性
+# 配置测试用的用户数据 [{id:7, username:aa, password:aa}, {8..}, {9..}]
+sp:
+  user-service:
+    users: "[{\"id\":7, \"username\":\"abc\",\"password\":\"123\"},
+             {\"id\":8, \"username\":\"def\",\"password\":\"456\"},
+             {\"id\":9, \"username\":\"ghi\",\"password\":\"789\"}]"
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka1:2001/eureka
