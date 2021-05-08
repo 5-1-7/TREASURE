@@ -11,6 +11,9 @@ spring:
     username: leesau
     password: a139131b
     port: 5672
+  zipkin:
+    sender:
+      type: rabbit #如不配置的情况下默认是web，http直接连接
 
 # 8001, 8101, 8201
 server:
