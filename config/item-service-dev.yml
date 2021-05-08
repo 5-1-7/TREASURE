@@ -2,6 +2,14 @@
 spring:
   application:
     name: item-service
+  cloud:
+    config:
+      override-none: true
+  rabbitmq:
+    host: 175.27.231.28
+    username: admin
+    password: admin
+    port: 5672
 
 #  8001,  8101,  8201
 server:
