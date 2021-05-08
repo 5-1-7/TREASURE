@@ -1,7 +1,16 @@
-# yml, yaml 读音：耶冒
+# yml, yaml 腋毛
 spring:
   application:
     name: user-service
+  cloud:
+    config:
+      # 让配置中心的配置，不覆盖项目的本地配置和命令参数
+      override-none: true
+  rabbitmq:
+    host: 175.27.231.28
+    username: admin
+    password: admin
+    port: 5672
 
 # 8001, 8101, 8201
 server:
@@ -13,7 +22,8 @@ sp:
   user-service:
     users: "[{\"id\":7, \"username\":\"abc\",\"password\":\"123\"},
              {\"id\":8, \"username\":\"def\",\"password\":\"456\"},
-             {\"id\":9, \"username\":\"ghi\",\"password\":\"789\"}]"
+             {\"id\":9, \"username\":\"ghi\",\"password\":\"789\"},
+             {\"id\":99, \"username\":\"SSS\",\"password\":\"010\"}]"
 
 
 eureka:
