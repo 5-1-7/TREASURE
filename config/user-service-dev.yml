@@ -1,4 +1,4 @@
-# yml, yaml 腋毛
+# yml, yaml 耶冒
 spring:
   application:
     name: user-service
@@ -8,8 +8,8 @@ spring:
       override-none: true
   rabbitmq:
     host: 175.27.231.28
-    username: admin
-    password: admin
+    username: leesau
+    password: a139131b
     port: 5672
 
 # 8001, 8101, 8201
